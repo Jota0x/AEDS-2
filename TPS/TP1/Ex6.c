@@ -1,38 +1,57 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
 
-bool isAnagrama(char *palavra);
+bool isAnagrama(char *palavra1, char *palavra2);
+char *ordena(char *palavra);
 
 int main()
 {
-    char *palavra = (char *)malloc(100 * sizeof(char));
+    char *palavra1 = (char *)malloc(100 * sizeof(char));
+    char *palavra2 = (char *)malloc(100 * sizeof(char));
 
-    while (scanf(" %[^\n]", palavra) && strcmp(palavra, "FIM") != 0)
+    while (scanf("%s%s", palavra1, palavra2) && (strcmp(palavra1, "FIM") != 0 || strcmp(palavra2, "FIM") != 0))
     {
-        if (isAnagrama(palavra))
+        ordena(palavra1);
+        ordena(palavra2);
+
+        if (isAnagrama(palavra1, palavra2))
             printf("SIM\n");
         else
             printf("NAO\n");
     }
 
-    free(palavra);
-
     return 0;
 }
 
-bool isAnagrama(char *palavra)
+// Verifica anagrama
+bool isAnagrama(char *palavra1, char *palavra2)
 {
-    int fim = strlen(palavra) - 1;
+    if (strlen(palavra1) != strlen(palavra2))
+        return false;
 
-    for (int i = 0; i < fim / 2; i++)
-    {
-        if (palavra[i] != palavra[fim])
+    for (int i = 0; i < strlen(palavra1); i++)
+        if (palavra1[i] != palavra2[i])
             return false;
 
-        fim--;
-    }
-
     return true;
+}
+
+// Ordena palavra para verificacao
+char *ordena(char *palavra)
+{
+
+    char aux;
+
+    for (int i = 0; i < strlen(palavra); i++)
+        for (int j = i + 1; j < strlen(palavra); j++)
+            if (palavra[i] > palavra[j])
+            {
+                aux = palavra[i];
+                palavra[i] = palavra[j];
+                palavra[j] = aux;
+            }
+
+    return palavra;
 }
