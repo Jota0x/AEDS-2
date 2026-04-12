@@ -1,7 +1,7 @@
 #include "pilha.h"
 
 //Cria nova Pilha 
-Pilha* newPilha()
+Pilha* newPilha()  
 {
     Pilha *p = (Pilha*)malloc(sizeof(Pilha));
 
