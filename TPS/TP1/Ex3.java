@@ -3,9 +3,44 @@ import java.util.*;
 public class Ex3 {
     public static void main(String[] args) {
 
+        Scanner dado = new Scanner(System.in);
+
+        String palavra = dado.nextLine();
+
+        while (!palavra.equals("FIM")) {
+
+
+            if (isVogal(palavra)) {
+                System.out.print("SIM ");
+            } else {
+                System.out.print("NAO ");
+            }
+
+            if (isConsoante(palavra)) {
+                System.out.print("SIM ");
+            } else {
+                System.out.print("NAO ");
+            }
+
+            if (isInteiro(palavra)) {
+                System.out.print("SIM ");
+            } else {
+                System.out.print("NAO ");
+            }
+
+            if (isReal(palavra)) {
+                System.out.println("SIM");
+            } else {
+                System.out.println("NAO");
+            }
+
+            palavra = dado.nextLine();
+
+        }
+
     }
 
-    boolean isVogal(String palavra) {
+    public static boolean isVogal(String palavra) {
 
         for (int i = 0; i < palavra.length(); i++)
             if (palavra.charAt(i) != 'a' || palavra.charAt(i) != 'o' || palavra.charAt(i) != 'i'
@@ -16,17 +51,22 @@ public class Ex3 {
 
     }
 
-    boolean isConsoante(String palavra) {
+    public static boolean isConsoante(String palavra) {
 
-        for (int i = 0; i < palavra.length(); i++)
-            if (palavra.charAt(i) == 'a' || palavra.charAt(i) == 'o' || palavra.charAt(i) == 'i'
+        for (int i = 0; i < palavra.length(); i++) {
+
+            if (palavra.charAt(i) < 'a' || palavra.charAt(i) > 'z')
+                return false;
+
+            if (palavra.charAt(i) == 'a' || palavra.charAt(i) == 'e' || palavra.charAt(i) == 'i'
                     || palavra.charAt(i) == 'o' || palavra.charAt(i) == 'u')
                 return false;
 
+        }
         return true;
     }
 
-    boolean isInteiro(String palavra) {
+    public static boolean isInteiro(String palavra) {
 
         for (int i = 0; i < palavra.length(); i++)
             if (palavra.charAt(i) < '0' || palavra.charAt(i) > '9')
@@ -36,7 +76,7 @@ public class Ex3 {
 
     }
 
-    boolean isReal(String palavra) {
+    public static boolean isReal(String palavra) {
 
         int ponto = 0;
 

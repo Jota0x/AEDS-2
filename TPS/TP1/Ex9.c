@@ -7,11 +7,12 @@ void ciframento(char *palavra, int tam);
 
 int main()
 {
-    char *palavra = (char *)malloc(100 * sizeof(char));
+    char *palavra = (char *)malloc(1000 * sizeof(char));
 
     while (scanf(" %[^\n]", palavra) && strcmp(palavra, "FIM") != 0)
     {
         int tam = strlen(palavra) - 1;
+
         ciframento(palavra, tam);
         printf("\n");
     }
