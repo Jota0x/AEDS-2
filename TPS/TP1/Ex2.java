@@ -7,14 +7,15 @@ public class Ex2 {
 
         // Cria objeto Random para randomizar letras
         Random random = new Random();
+        random.setSeed(4);
 
         String palavra = dado.nextLine();
 
         while (!palavra.equals("FIM")) {
 
             // Letras aleatorizadas
-            char letra1 = (char) ('a' + random.nextInt(26));
-            char letra2 = (char) ('a' + random.nextInt(26));
+            char letra1 = (char) ('a' + (Math.abs(random.nextInt()) % 26));
+            char letra2 = (char) ('a' + (Math.abs(random.nextInt()) % 26));;
 
             // Faz troca
             alteracao(palavra, letra1, letra2);

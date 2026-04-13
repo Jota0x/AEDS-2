@@ -12,8 +12,6 @@ int main()
 {
     char *palavra = (char *)malloc(1000 * sizeof(char));
 
-    
-
     while (scanf(" %[^\n]", palavra) && strcmp(palavra, "FIM") != 0)
     {
 
