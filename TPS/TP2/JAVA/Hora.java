@@ -33,6 +33,8 @@ public class Hora {
 
         Hora horas = new Hora(hora, minuto);
 
+        dado.close();
+
         return horas;
 
     }

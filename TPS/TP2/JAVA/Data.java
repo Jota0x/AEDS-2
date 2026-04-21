@@ -41,7 +41,9 @@ public class Data {
         //cria objeto Data
         Data data = new Data(dia,mes,ano);
 
-        return data;
+        dado.close();
+        
+        return data;    
 
     }
 
