@@ -1,5 +1,4 @@
 
-
 typedef struct
 {
   int hora;
@@ -14,8 +13,7 @@ Hora parse_hora(char *s)
   Hora hora;
 
   sscanf(s,"%d:%d",&hora.hora, &hora.minuto);
-  
-  return hora;
+    return hora;
 
 }
 

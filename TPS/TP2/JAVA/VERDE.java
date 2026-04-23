@@ -4,6 +4,8 @@ import java.io.*;
 public class VERDE {
     public static void main(String[] args) {
 
+        Locale.setDefault(Locale.US);
+
         Scanner dado = new Scanner(System.in);
 
         ColecaoRestaurantes colecao = ColecaoRestaurantes.lerCSV();
@@ -73,7 +75,7 @@ class Data {
         return this.ano;
     }
 
-    public Data parseData(String s) {
+    public static Data parseData(String s) {
 
         // Cria objeto do tipo Scanners
         Scanner dado = new Scanner(s);
@@ -93,6 +95,7 @@ class Data {
         return data;
 
     }
+
 
     public String formatar() {
         return String.format("%02d/%02d/%04d", getDia(), getMes(), getAno());
@@ -134,21 +137,21 @@ class Hora {
         return this.minuto;
     }
 
-    public Hora parseHora(String s) {
+    // Retorna vetor para as duas horas da string
+    public static Hora parseHora(String s) {
 
         Scanner dado = new Scanner(s);
 
-        dado.useDelimiter(":");
+        dado.useDelimiter("[://-]");
 
-        int hora = dado.nextInt();
-        int minuto = dado.nextInt();
+        int h = dado.nextInt();
+        int m = dado.nextInt();
 
-        Hora horas = new Hora(hora, minuto);
+        Hora hora = new Hora(h, m);
 
         dado.close();
 
-        return horas;
-
+        return hora;
     }
 
     public String formatar() {
@@ -164,7 +167,7 @@ class Restaurante {
     private String cidade;
     private int capacidade;
     private double avaliacao;
-    private String tiposCozinha;
+    private String[] tiposCozinha;
     private int faixaPreco;
     private Hora horaAbertura;
     private Hora horaFechamento;
@@ -176,7 +179,7 @@ class Restaurante {
     }
 
     public Restaurante(int id, String nome, String cidade, int capacidade, double avaliacao,
-            String tiposCozinha, int faixaPreco, Hora horaAbertura, Hora horaFechamento,
+            String[] tiposCozinha, int faixaPreco, Hora horaAbertura, Hora horaFechamento,
             Data dataAbertura, boolean aberto) {
 
         this.id = id;
@@ -214,7 +217,7 @@ class Restaurante {
         this.avaliacao = avaliacao;
     }
 
-    public void setTiposCozinha(String tiposCozinha) {
+    public void setTiposCozinha(String[] tiposCozinha) {
         this.tiposCozinha = tiposCozinha;
     }
 
@@ -259,7 +262,7 @@ class Restaurante {
         return this.avaliacao;
     }
 
-    public String getTiposCozinha() {
+    public String[] getTiposCozinha() {
         return this.tiposCozinha;
     }
 
@@ -283,45 +286,58 @@ class Restaurante {
         return this.aberto;
     }
 
-    /*
-     * Arrumar depois
-     *
-     * public static Restaurante parseRestaurante(String s) {
-     * 
-     * Restaurante restaurante = new Restaurante();
-     * 
-     * Scanner dado = new Scanner(s);
-     * dado.useDelimiter("[,] ## ");
-     * 
-     * int id = dado.nextInt();
-     * String nome = dado.next();
-     * String cidade = dado.next();
-     * int capacidade = dado.nextInt();
-     * double avaliacao = Double.parseDouble(dado.next());
-     * 
-     * String tiposCozinha = dado.next();
-     * 
-     * dado.close();
-     * 
-     * }
-     * 
-     * 
-     * public String formatar() {
-     * return String.format(
-     * "[%d ## %s ## %s ## %d ## %.1f ## [%s] ## %s ## %s ## %s ## %b]",
-     * id, nome, cidade, capacidade, avaliacao,
-     * String.join(",", tiposCozinha), "$".repeat(faixaPreco),
-     * horarioAbertura.formatar(),
-     * dataAbertura.formatar(), aberto);
-     * }
-     * 
-     */
+    //Trasforma String em Objeto do Tipo Restaurante
+    public static Restaurante parseRestaurante(String s) {
 
+        Scanner dado = new Scanner(s);
+        dado.useDelimiter(",");
+	
+        
+        int id = dado.nextInt();
+        String nome = dado.next();
+        String cidade = dado.next();
+        int capacidade = dado.nextInt();
+        double avaliacao = dado.nextDouble();
+
+	//Metodo para pegar os varios tipos de Cozinha 
+	//Arrumar
+        int i = 0;
+        String[] tiposCozinha = new String[i];
+        while(dado.hasNext())
+        {
+            dado.useDelimiter(";");
+            tiposCozinha[i] = dado.nextLine();
+            i++;
+        }
+
+        int faixaPreco = dado.nextInt();
+        Hora horaAbertura = Hora.parseHora(dado.next());
+        Hora horaFechamento = Hora.parseHora(dado.next());
+        Data dataAbertura = Data.parseData(dado.next());
+        boolean aberto = dado.nextBoolean();
+
+        Restaurante restaurante = new Restaurante(id, nome, cidade, capacidade, avaliacao, tiposCozinha, faixaPreco,
+                horaAbertura, horaFechamento, dataAbertura, aberto);
+
+        dado.close();
+
+        return restaurante;
+
+    }
+
+    // Formata string Restaurante
+    public String formatar() {
+
+        return String.format(" [%d ## %s ## %s ## %d ## %.2 ## [%s] ## %d ## %s-%s ## %s ## ]", id, nome, cidade,
+                capacidade, avaliacao, tiposCozinha, faixaPreco, horaAbertura.toString(), horaFechamento.toString(),
+                dataAbertura.toString(), aberto);
+
+    }
 }
 
 class ColecaoRestaurantes {
 
-    private int tamanho = 0;
+    private int tamanho;
     private Restaurante[] restaurantes;
 
     // Construtores
@@ -330,7 +346,7 @@ class ColecaoRestaurantes {
 
     ColecaoRestaurantes(int tamanho, Restaurante restaurantes) {
 
-        this.tamanho = tamanho;
+        this.tamanho = 0;
         this.restaurantes = new Restaurante[tamanho];
 
     }
@@ -366,7 +382,7 @@ class ColecaoRestaurantes {
             }
 
             // Loop principal para leitura
-            while (dado.hasNextLine() && tamanho < restaurantes.length) {
+            while (dado.hasNextLine()) {
 
                 // le linha
                 String leitura = dado.nextLine();
