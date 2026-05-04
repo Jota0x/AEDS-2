@@ -408,7 +408,7 @@ class ColecaoRestaurantes {
 
         ColecaoRestaurantes colecao = new ColecaoRestaurantes();
 
-        colecao.lerCSV("/tmp/RESTAURANTES.CSV");
+        colecao.lerCSV("/tmp/restaurantes.csv");
 
         return colecao;
     }
