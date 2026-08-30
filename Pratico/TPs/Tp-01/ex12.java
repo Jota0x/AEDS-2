@@ -1,0 +1,22 @@
+import java.util.Scanner;
+
+public class ex12 {
+    public static void main(String[] args) {
+        
+        Scanner dado = new Scanner(System.in);
+
+        int num = dado.nextInt();
+
+        System.out.println(SomaDigitos(num));
+
+    }
+
+    public static int SomaDigitos(int n)
+    {
+        if(n == 0)
+            return 0;
+
+        return n % 10 + SomaDigitos(n/10);
+    }
+
+}
