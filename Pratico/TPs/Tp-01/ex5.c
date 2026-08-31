@@ -7,17 +7,24 @@ int main()
 {
   int n;
 
-  scanf("%d",&n);
-
-  printf("%d",soma_digitos(n));
+  while (scanf("%d", &n) == 1)
+  {
+    printf("%d\n", soma_digitos(n));
+  }
 
   return 0;
 }
 
+//Soma digitos
 int soma_digitos(int n)
 {
-  if(n < 0)
-    return 0;
-  else 
-    return n % 10 + soma_digitos(n/10);
+  int soma = 0;
+
+  while (n != 0)
+  {
+    soma += n % 10;
+    n = n / 10;
+  }
+
+  return soma;
 }
