@@ -4,40 +4,39 @@
 
 Lista *criar_lista()
 {
-    Lista *l = (Lista*)malloc(sizeof(Lista));
+    Lista *l = (Lista *)malloc(sizeof(Lista));
 
-    if(l == NULL)
+    if (l == NULL)
         return NULL;
 
     l->inicio = NULL;
     l->fim = l->inicio;
 
     return l;
-
 }
 
 Node *criar_celula(int valor)
 {
-    Node *node = (Node*)malloc(sizeof(Node));
+    Node *node = (Node *)malloc(sizeof(Node));
 
-    if(node == NULL)
+    if (node == NULL)
         return NULL;
 
     node->dado = valor;
+    node->prox = NULL;
 
     return node;
 }
 
 void adicionar_inicio(Lista *l, int valor)
 {
-    Node *node = cria_celula(valor);
-    
+    Node *node = criar_celula(valor);
+
     node->prox = l->inicio;
     l->inicio = node;
 
-    if(l->fim == NULL)
+    if (l->fim == NULL)
         l->fim = node;
-
 }
 
 void adicionar_fim(Lista *l, int valor)
@@ -47,32 +46,65 @@ void adicionar_fim(Lista *l, int valor)
     l->fim->prox = node;
     l->fim = node;
 
-    if(l->inicio == NULL)
+    if (l->inicio == NULL)
+    {
         l->inicio = node;
-
+        l->fim = node;
+    }
 }
 
-void adicionar_posicao(Lista *l, int valor, int posicao)
+void remover_inicio(Lista *l)
 {
-    Node *node = criar_celula(valor);
-
-    if(l->inicio == NULL || l->fim == NULL)
+    if (l->inicio == NULL)
+        l->fim = NULL;
+    else
     {
-        l->inicio = node;
-        l->fim = l->inicio;
+        Node *node = l->inicio;
+        l->inicio = l->inicio->prox;
+
+        free(node);
     }
+}
 
-    Node *aux = l->inicio;
-    int posicao = 1;
-
-    while(aux != NULL || posicao != aux)
+void remover_fim(Lista *l)
+{
+    if (l->fim == NULL)
+        return;
+    else
     {
-        Node *ant = aux;
-        aux = aux->prox;
+        Node *node = l->inicio;
 
+        while (node->prox != l->fim)
+            node = node->prox;
         
+        free(l->fim);
+        l->fim = node;
+    }
+}
 
-        posicao++;
+void mostrar(Lista *l)
+{
+    Node *node = l->inicio;
+
+    while(node != NULL)
+    {
+       printf("%d ",node->dado);
+        node = node->prox;
+    }
+}
+
+void deletar(Lista *l)
+{
+    Node *node = l->inicio;
+
+    while(node != NULL)
+    {
+        l->inicio = l->inicio->prox;
+        free(node);
+        node = l->inicio;
     }
 
+    free(l->inicio);
+    free(l->fim);
+    free(l);
 }
