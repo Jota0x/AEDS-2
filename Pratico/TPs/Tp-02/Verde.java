@@ -57,6 +57,8 @@ class Veiculo {
     private boolean turbo;
     private Data data_registro;
 
+    public Veiculo() {}
+
     public Veiculo(int id, String marca, String modelo, int ano, String categoria, String combustivel, int cilindros, float cilindrada,
         String transmissao, String tracao, float consumo_cidade, float consumo_estrada, float co2, boolean turbo, Data data_registro) {
 
@@ -95,7 +97,14 @@ class Veiculo {
     public Data getData() {return data_registro;}
 
     //Metodos de Veiculo
-    public Veiculo parseVeiculo(String s) {}
+    public Veiculo parseVeiculo(String s) {
+
+        String[] partes = s.split("##");
+
+        return new Veiculo(Integer.parseInt(partes[0]), partes[1], partes[2], Integer.parseInt(partes[3]), partes[4], partes[5], Float.parseFloat(partes[6]), partes[7], partes[8], Float.parseFloat(partes[9]),
+      Float.parseFloat(partes[10]), Float.parseFloat(partes[11]), Boolean.parseBoolean(partes[12]), partes[13]);
+
+    }
     public String  format() {
         
         String formatacao = String.format("[%d ## %s ## %s ## %d ## %s ## [%s] ## %s ## %f ## %s ## %s ## %f ## %f ## %f ## %b ## %s]"
